@@ -1,0 +1,96 @@
+跳到内容
+446432510
+/
+公开诉讼
+从zorzcc / openwrt-actions分叉
+代码
+拉取要求
+动作
+专案
+维基百科
+安全
+见解
+设定值
+公开诉讼/.github/工作流程/ k2p-build.yml
+@ 446432510
+446432510 更新并将.github / workflows / k2p-build.yml重命名为.github /工作流程/ k2p…
+…
+ 1位 贡献者
+71线（59位置）  1.91 KB
+ 
+名称：OpenWrt k2p CI
+于：
+  时间表：
+    - cron的：   0 7 * * 5
+  推送：
+    分支机构：
+      -大师
+    路径：
+      - '. config.openwrt '
+      - '. github / workflows / k2p-build.yml '
+
+    
+职位：
+  建立：
+    运行：ubuntu-latest
+    步骤：
+
+    -名称：签出-克隆存储库
+      用途：actions / checkout @ v2
+
+    -名称：安装-系统构建依赖项
+      运行：|
+        sudo swapoff / swapfile || 回声“没有交换文件”
+        sudo rm -rf / swapfile /etc/apt/sources.list.d/* / usr / share / dotnet / usr / local / lib / android / opt / ghc || 回声“部分清洁”
+        sudo -E apt-get -qq更新
+        sudo -E apt-get -yqq install subversion构建必要的libncurses5-dev zlib1g-dev gawk git ccache gettext libssl-dev xsltproc zip
+        须藤-E apt-get -yqq autoremove --purge
+        须藤-E apt-get -qq clean
+    -名称：下载-openwrt源下载
+      运行：|
+        git clone -b openwrt-19.07 http://github.com/ericpaulbishop/gargoyle.git
+        
+    -名称：更新-openwrt源代码更新和安装
+      运行：|
+        cd openwrt
+        ./scripts/feeds更新-a
+        ./scripts/feeds install -a
+    -名称：克隆- OpenWrt的插件的源
+      运行：|
+        cd openwrt
+        git clone https://github.com/MeIsReallyBa/k2p-openwrt-mt7615_5.0.2.0 package / mtk
+    -名称：配置-官方openwrt k2p构建配置
+      运行：|
+        cp .config.openwrt openwrt / .config
+        cd openwrt
+        使defconfig
+    -名称：下载-openwrt构建依赖项
+      运行：|
+        cd openwrt
+        进行下载-j8
+    -名称：构建-使openwrt源
+      运行：|
+        cd openwrt
+        使-j $（nproc）
+    -名称：删除-删除软件包文件
+      运行：|
+        cd openwrt / bin / targets / ramips / mt7621 /
+        rm -rf软件包/
+        ls -hl
+    -名称：上传-推送到工件文件
+      用途：actions / upload-artifact @ v1
+      与：
+        名称：openwrt-k2p
+        路径：openwrt / bin / targets / ramips / mt7621 /
+©2021 GitHub，Inc.
+条款
+隐私
+安全
+状态
+文件
+联系GitHub
+价钱
+原料药
+训练
+博客
+关于
